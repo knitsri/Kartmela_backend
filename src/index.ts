@@ -12,7 +12,7 @@ import categoryRoutes from './routes/category.routes.js'
 const app = express()
 
 const allowedOrigins = [
-  "http://localhost:5173",           
+  "https://kartmela.vercel.app",           
   "https://kartmela-frontend.onrender.com" 
 ];
 
