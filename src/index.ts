@@ -11,7 +11,16 @@ import categoryRoutes from './routes/category.routes.js'
 
 const app = express()
 
- app.use(cors())
+const allowedOrigins = [
+  "http://localhost:5173",           
+  "https://kartmela-frontend.onrender.com" 
+];
+
+ app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
+
  app.use(express.json())
 
  const port = process.env.PORT
