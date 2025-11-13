@@ -70,7 +70,7 @@ export async function updateCartItem(req:Request,res:Response){
     }
   }
   catch(e){
-    res.status(400).json({message:e})
+    res.status(500).json({message:e})
   }
 }
 

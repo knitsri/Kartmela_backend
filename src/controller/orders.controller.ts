@@ -13,7 +13,7 @@ export async function addOrders(req:Request,res:Response){
         res.status(201).json(order)
    }
    catch(e){
-      res.status(404).json({message:e})
+      res.status(500).json({message:e})
    }
 }
 
@@ -25,7 +25,7 @@ export async function getOrders(req:Request,res:Response) {
    }
 
    catch(e){
-        res.status(400).json({message:e})
+        res.status(500).json({message:e})
    }  
 }
     

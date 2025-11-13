@@ -17,7 +17,7 @@ export async function postProductReviews(req:Request,res:Response){
     }
 
     catch(e){
-      res.status(400).json({
+      res.status(500).json({
         message : e
       })
     } 
@@ -70,7 +70,7 @@ export async function getSearchResults(req:Request,res:Response){
     return res.status(200).json(products)
   }
   catch(e) {
-   return res.status(400).json({message:e})
+   return res.status(500).json({message:e})
   }
 }
 

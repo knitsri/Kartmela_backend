@@ -3,8 +3,8 @@ import { wishListModel } from "../model/wishlist.model.js";
 
 
 export async function AddToWishList(req:Request,res:Response){
-  const userId = (req as any).user._id
   try{
+    const userId = (req as any).user._id
     const {productId} = req.body 
     const wishlist = await wishListModel.findOne({userId})
     if(!wishlist){
@@ -43,7 +43,7 @@ export async function GetWishList(req:Request,res:Response){
    res.status(200).json(wishlist)
  }
  catch(e){
-    res.status(400).json({
+    res.status(500).json({
         message : e
     })
  }
@@ -55,7 +55,7 @@ export async function DeleteFromWishlist(req:Request,res:Response){
    const {productId} = req.body
    const wishlist = await wishListModel.findOne({userId})
    if(!wishlist){
-     return res.status(400).json({message:"Wishlist not found."})
+     return res.status(404).json({message:"Wishlist not found."})
    } 
    wishlist.products.pull({productId})
    await wishlist.save()
@@ -63,6 +63,6 @@ export async function DeleteFromWishlist(req:Request,res:Response){
    return res.status(200).json(updatedWishlist)
   }
   catch(e){
-    res.status(400).json({message:e})
+    res.status(500).json({message:e})
   }
 }

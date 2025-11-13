@@ -3,28 +3,39 @@ import { userModel } from "../model/usermodel.js";
 import bcrypt from "bcrypt"
 import "dotenv/config"
 import jwt from "jsonwebtoken"
+import {z} from "zod"
 
 export async function registerUser(req:Request,res:Response){
  const {username,email,password} = req.body 
- 
+ const userRules = z.object({
+    username : z.string().min(3).max(20),
+    email : z.email(),
+    password : z.string().min(4).max(12)
+ })
+
+ const parsedData = userRules.safeParse({username,email,password})
+ if(!parsedData.success){
+    const msg = parsedData.error.issues.map(i => i.message)
+    return res.status(400).json({message: msg.join(", ")})
+ }
  try{
     const existingUser = await userModel.findOne({username}) 
 
     if(existingUser){
-        res.status(400).json({
+        return res.status(400).json({
             message : "You already have an account. Please log in to continue."
         })
     }
     else{
         const hashedPassword = await bcrypt.hash(password,10)
         const newUser = await userModel.create({username,email,password:hashedPassword})
-        res.status(200).json({
+        return res.status(201).json({
             message : "user created successfully"
         })
     }
  }
  catch(e) {
-    res.status(500).json({
+    return res.status(500).json({
         error : e
     })
  }
@@ -71,7 +82,7 @@ export async function getUserDetails(req:Request,res:Response){
         res.status(200).json(user)
     }
     catch(e){
-        res.status(400).json({message:e})
+        res.status(500).json({message:e})
     }
 }
 
@@ -83,6 +94,8 @@ export async function deleteUser(req:Request,res:Response){
     }
 
     catch(e){
-        res.status(400).json({message:e})
+        res.status(500).json({message:e})
     } 
 }
+
+

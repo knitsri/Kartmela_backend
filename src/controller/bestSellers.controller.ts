@@ -9,7 +9,7 @@ export async function getBestSellersData(req:Request,res:Response){
      res.status(201).json(products)
   }
   catch(e){
-    res.status(400).json({
+    res.status(500).json({
         message : e
     })
   }
@@ -22,7 +22,7 @@ export async function getBestSellersById(req:Request,res:Response){
         const userId = (req as any).user._id
         const product = await ProductModel.findById(req.params.id)
         if(!product){
-            return res.status(400).json({message:"Product Not Found"})
+            return res.status(404).json({message:"Product Not Found"})
         }
         let isInWishList = false 
         let UserSelectedSize = null
