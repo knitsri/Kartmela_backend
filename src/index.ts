@@ -11,15 +11,37 @@ import categoryRoutes from './routes/category.routes.js'
 
 const app = express()
 
+// const allowedOrigins = [
+//   "https://kartmela.vercel.app",           
+//   "https://kartmela-frontend.onrender.com" 
+// ];
+
+//  app.use(cors({
+//   origin: allowedOrigins,
+//   credentials: true,
+// }));
+
+
 const allowedOrigins = [
-  "https://kartmela.vercel.app",           
-  "https://kartmela-frontend.onrender.com" 
+  "https://kartmela.vercel.app",
+  "https://kartmela-frontend.onrender.com",
+  "http://localhost:5173"
 ];
 
- app.use(cors({
-  origin: allowedOrigins,
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log("❌ Blocked by CORS:", origin);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
+
 
  app.use(express.json())
 
